@@ -1,16 +1,22 @@
-public class ContaEspecial extends ContaCorrente{
-    private double limiteCredito = 1000.0;
+/**
+ * Representa uma conta especial com limite de crédito.
+ * Herda de ContaAbstrata.
+ */
+public class ContaEspecial extends ContaAbstrata {
 
-    public ContaEspecial(String n, double s) { // Construtor que usa os parâmetros da classe pai
-        super(n, s);
+    private final double LIMITE_CREDITO = 1000.0; // [cite: 757, 759]
+
+    public ContaEspecial(String numero) {
+        super(numero);
+    }
+
+    // Método para que a classe Banco possa consultar o limite.
+    public double getLimiteCredito() {
+        return LIMITE_CREDITO;
     }
 
     @Override
-    public void debitar(double valor){
-        if((this.getSaldo() + limiteCredito) >= valor){
-            this.setSaldo(this.getSaldo() - valor);
-        } else {
-            System.out.println("Saldo insuficiente para o débito de R$" + valor);
-        }
+    public String getTipoConta() {
+        return "Conta Especial";
     }
 }

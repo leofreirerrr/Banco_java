@@ -1,12 +1,22 @@
-public class ContaPoupanca extends ContaCorrente{
-    private final double taxaJuros = 0.01; // private pq ninguém fora da classe precisa acessar e final pq n vai mudar
+/**
+ * Representa uma conta poupança.
+ * Herda de ContaAbstrata e possui uma taxa de juros.
+ */
+public class ContaPoupanca extends ContaAbstrata {
 
-    public ContaPoupanca(String n, double s) {
-        super(n, s); // Chama o construtor da classe pai (ContaCorrente)
+    private final double TAXA_JUROS = 0.01; // [cite: 752]
+
+    public ContaPoupanca(String numero) {
+        super(numero);
     }
 
-    public void renderJuros(){
-        double juros = this.saldo * this.taxaJuros; // Calcula os juros
-        this.creditar(juros); // Credita os juros ao saldo
+    // Método para obter a taxa, pode ser útil para a classe Banco.
+    public double getTaxaJuros() {
+        return TAXA_JUROS;
+    }
+
+    @Override
+    public String getTipoConta() {
+        return "Conta Poupança";
     }
 }
