@@ -1,12 +1,27 @@
-public class ContaPoupanca extends ContaCorrente{
-    private final double taxaJuros = 0.01; // private pq ninguém fora da classe precisa acessar e final pq n vai mudar
+// FONTES: Herança PII.pdf
 
-    public ContaPoupanca(String n, double s) {
-        super(n, s); // Chama o construtor da classe pai (ContaCorrente)
+public class ContaPoupanca extends ContaCorrente {
+
+    // A taxa de juros é uma constante da classe
+    private static final double TAXA_JUROS = 0.005; // 0.5%
+
+    public ContaPoupanca(String numero) {
+        // Chama o construtor da superclasse (ContaCorrente)
+        super(numero);
     }
 
-    public void renderJuros(){
-        double juros = this.saldo * this.taxaJuros; // Calcula os juros
-        this.creditar(juros); // Credita os juros ao saldo
+    /**
+     * Calcula o juro com base na taxa e no saldo atual,
+     * e credita o valor na própria conta.
+     */
+    public void renderJuros() {
+        double juros = this.getSaldo() * TAXA_JUROS;
+        this.creditar(juros);
+        System.out.println("Juros de R$" + String.format("%.2f", juros) + " rendeu na conta " + getNumero());
+    }
+
+    @Override
+    public String toString() {
+        return "Conta Poupança [Número: " + getNumero() + ", Saldo: R$" + String.format("%.2f", getSaldo()) + "]";
     }
 }

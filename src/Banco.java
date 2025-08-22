@@ -2,45 +2,50 @@ import java.util.ArrayList;
 
 public class Banco {
 
-    private ArrayList<ContaCorrente> contas;
-
+    // Usa ArrayList para armazenar dinamicamente as contas
+    private final ArrayList<ContaAbstrata> contas;
 
     public Banco() {
-        // Cria uma lista vazia quando um objeto Banco é instanciado.
         this.contas = new ArrayList<>();
     }
 
-    public void adicionarConta(ContaCorrente c) {
-        // O método .add() do ArrayList cuida de todo o trabalho.
-        this.contas.add(c);
-        System.out.println("Conta " + c.getNumero() + " adicionada com sucesso!");
+    // Adiciona uma conta de qualquer tipo (Corrente, Poupanca, Especial)
+    public void adicionarConta(ContaAbstrata conta) {
+        this.contas.add(conta);
+        System.out.println("Conta " + conta.getNumero() + " adicionada com sucesso.");
     }
 
-    public ContaCorrente obterConta(String numConta) {
-        for(ContaCorrente conta:this.contas){
-            if(conta.getNumero().equals(numConta)){
+    // Busca uma conta pelo número
+    public ContaAbstrata obterConta(String numero) {
+        for (ContaAbstrata conta : this.contas) {
+            if (conta.getNumero().equals(numero)) {
                 return conta;
             }
         }
         return null;
     }
 
-    public void removerConta(String numConta) {
-        ContaCorrente contaLixo = this.obterConta(numConta);
-
-        if(numConta != null){
-            contas.remove(numConta);
-            System.out.println("Conta " + numConta + " excluída com sucesso!");
+    // Remove uma conta pelo número
+    public boolean removerConta(String numero) {
+        ContaAbstrata contaParaRemover = obterConta(numero);
+        if (contaParaRemover != null) {
+            return this.contas.remove(contaParaRemover);
         }else{
-            System.out.println("Conta não encontrada");
+        return false;
         }
     }
 
+    // Exibe todas as contas cadastradas
     public void exibirContas() {
-        for(ContaCorrente conta:contas){
-            System.out.println("------------------------------------");
-            System.out.println("Número: " + conta.getNumero());
-            System.out.printf("Saldo: R$ %.2f\n", conta.getSaldo());
+        if (contas.isEmpty()) {
+            System.out.println("Nenhuma conta cadastrada.");
+        } else {
+            System.out.println("\n--- Lista de Contas ---");
+            for (ContaAbstrata conta : this.contas) {
+                // O método toString() correto será chamado devido ao polimorfismo
+                System.out.println(conta.toString());
+            }
+            System.out.println("-----------------------\n");
         }
     }
 }

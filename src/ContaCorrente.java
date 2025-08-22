@@ -1,37 +1,31 @@
-public class ContaCorrente {
-    private final String numero; //
-    protected double saldo; // protected porque a classe filha precisa acessar
+public class ContaCorrente extends ContaAbstrata {
 
-    public ContaCorrente(String numero, double saldo){
-        this.numero = numero;
-        this.saldo = saldo;
+    public ContaCorrente(String numero) {
+        // Chama o construtor da superclasse (ContaAbstrata)
+        super(numero);
     }
 
-    public String getNumero() {
-        return numero;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    public void creditar(double valor){
-        if(valor > 0){
-            this.setSaldo(this.getSaldo()+valor);
-        }else{
-            System.out.println("Valor de crédito inválido: R$" + valor);
+    @Override
+    public void creditar(double valor) {
+        if (valor > 0) {
+            this.saldo += valor;
+            System.out.println("Crédito de R$" + String.format("%.2f", valor) + " realizado com sucesso.");
+        } else {
+            System.out.println("Valor de crédito inválido.");
         }
     }
 
-    public void debitar(double valor){
-        if(valor > 0 && this.getSaldo() >= valor){
-            this.setSaldo(this.getSaldo() - valor);
-        }else{
-            System.out.println("Saldo insuficiente ou valor inválido para o débito de R$" + valor);
+    @Override
+    public boolean debitar(double valor) {
+        if (valor > 0 && this.saldo >= valor) {
+            this.saldo -= valor;
+            return true; // Apenas retorna sucesso
         }
+        return false; // Apenas retorna falha
+    }
+
+    @Override
+    public String toString() {
+        return "Conta Corrente [Número: " + getNumero() + ", Saldo: R$" + String.format("%.2f", getSaldo()) + "]";
     }
 }

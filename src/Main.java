@@ -2,79 +2,193 @@ import java.util.Scanner;
 
 public class Main {
 
+    // 1. Scanner único e estático para toda a classe
+    private static final Scanner scanner = new Scanner(System.in);
+    private static final Banco banco = new Banco();
+
     public static void main(String[] args) {
+        System.out.println("|======================|\n|  Bem-vindo ao Banco  |\n|======================|");
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("|======================|\n|  Bem vindo ao Banco  |\n|======================|");
-        System.out.println("|==========================|\n|   Criar Conta Corrente   |\n|==========================|");
-        Banco banco = new Banco();
-        ContaCorrente contac1 = new ContaCorrente("1",0);
-        banco.adicionarConta(contac1);
+        int opcao;
+        do {
+            exibirMenu();
+            opcao = scanner.nextInt();
+            scanner.nextLine(); // Limpa o buffer após ler o número
 
-        ContaEspecial conta_esp = new ContaEspecial("2",0);
-        ContaPoupanca conta_poup = new ContaPoupanca("3",0);
-
-        boolean a = true;
-        while (a){
-            Scanner escolha = new Scanner(System.in);
-            System.out.println("|===========================|\n| Selecione uma Opção       |\n|   1. Exibir Conta         |\n|   2. Creditar             |\n|   3. Debitar              |\n|                           |\n|   4. Criar Conta Especial |\n|   5. Criar Conta Poupança |\n|   6. Render Juros         |\n|===========================|");
-            int opcao = escolha.nextInt();
-
-            if (opcao == 1) {
-                banco.exibirContas();
+            switch (opcao) {
+                case 1:
+                    cadastrarConta();
+                    break;
+                case 2:
+                    creditarValor();
+                    break;
+                case 3:
+                    debitarValor();
+                    break;
+                case 4:
+                    banco.exibirContas();
+                    break;
+                case 5:
+                    removerConta();
+                    break;
+                case 6:
+                    renderJuros();
+                    break;
+                case 7:
+                    consultarSaldo();
+                    break;
+                case 0:
+                    System.out.println("\nObrigado por usar o nosso sistema! :)");
+                    break;
+                default:
+                    System.out.println("\nOpção inválida. Por favor, tente novamente.");
             }
-            else if (opcao == 2) {
-                System.out.println("Valor do crédito: ");
-                Scanner valor = new Scanner(System.in);
-                int valor_credito = valor.nextInt();
-                contac1.creditar(valor_credito);
-            }
+        } while (opcao != 0);
 
-            else if (opcao == 3) {
-                Scanner conta = new Scanner(System.in);
-                System.out.println("|==========================|\n" +
-                        "| Escolha qual Conta usar: |\n" +
-                        "|                          |\n" +
-                        "| 1. Conta Corrente        |\n" +
-                        "| 2. Conta Especial        |\n" +
-                        "|==========================|");
-                int opcao_conta = escolha.nextInt();
-                if (opcao_conta == 1) {
-                    System.out.println("Valor do débito: ");
-                    Scanner valor = new Scanner(System.in);
-                    int valor_debito = valor.nextInt();
-                    contac1.debitar(valor_debito);
-                }
-                else if (opcao_conta == 2) {
-                    System.out.println("Valor do débito: ");
-                    Scanner valor = new Scanner(System.in);
-                    int valor_debito = valor.nextInt();
-                    conta_esp.debitar(valor_debito);
-                }
-            }
-            else if (opcao == 4) {
-                System.out.println("Conta Especial criada com sucesso!");
-                banco.adicionarConta(conta_esp);
-            }
-            else if (opcao == 5) {
-                System.out.println("Conta Poupanca criada com sucesso!");
-                banco.adicionarConta(conta_poup);
-            } else if (opcao == 6) {
-                conta_poup.renderJuros();
-            }
-            System.out.println("|=====================|\n| Continuar? (s ou n) |\n|=====================|");
-            String continuar = sc.nextLine();
-            if (continuar.equals("N")||continuar.equals("n")){
-                a = false;
-            }
+        scanner.close();
+    }
 
+    public static void exibirMenu() {
+        System.out.println("\n|===========================|");
+        System.out.println("|   Selecione uma Opção     |");
+        System.out.println("|---------------------------|");
+        System.out.println("| 1. Cadastrar nova conta   |");
+        System.out.println("| 2. Creditar valor         |");
+        System.out.println("| 3. Debitar valor          |");
+        System.out.println("| 4. Exibir todas as contas |");
+        System.out.println("| 5. Remover conta          |");
+        System.out.println("| 6. Render Juros Poupança  |");
+        System.out.println("| 7. Consultar Saldo        |");
+        System.out.println("| 0. Sair do Sistema        |");
+        System.out.println("|===========================|");
+        System.out.print("Escolha uma opção: ");
+    }
 
-            System.out.println("Obrigado por usar o programa!! :)");
+    private static void cadastrarConta() {
+        System.out.println("\n--- Cadastro de Conta ---");
+        System.out.print("Digite o número da nova conta: ");
+        String numero = scanner.nextLine();
+
+        // Verifica se a conta já existe
+        if (banco.obterConta(numero) != null) {
+            System.out.println("Erro: Já existe uma conta com este número.");
+            return;
         }
 
-//        ContaCorrente contac1 = new ContaCorrente(123,100);
-//
-//        Banco banco1 = new Banco();
-//        banco1.adicionarConta(contac1);
+        System.out.println("Tipo de conta:\n 1-Corrente\n 2-Poupança\n 3-Especial");
+        System.out.print("Escolha o tipo: ");
+        int tipo = scanner.nextInt();
+        scanner.nextLine();
+
+        ContaAbstrata novaConta;
+        switch (tipo) {
+            case 1:
+                novaConta = new ContaCorrente(numero);
+                break;
+            case 2:
+                novaConta = new ContaPoupanca(numero);
+                break;
+            case 3:
+                novaConta = new ContaEspecial(numero);
+                break;
+            default:
+                System.out.println("Tipo de conta inválido. Cadastro cancelado.");
+                return;
+        }
+        banco.adicionarConta(novaConta);
+    }
+
+    private static void consultarSaldo() {
+        System.out.print("\nDigite o número da conta para consultar o saldo: ");
+        String numero = scanner.nextLine();
+
+        // Procura a conta no banco
+        ContaAbstrata conta = banco.obterConta(numero);
+
+        // Se a conta for encontrada, exibe o saldo
+        if (conta != null) {
+            System.out.println("------------------------------------");
+            // O método getSaldo() já existe na ContaAbstrata e é herdado por todas as contas
+            System.out.println("Saldo da Conta " + conta.getNumero() + ": R$ " + String.format("%.2f", conta.getSaldo()));
+            System.out.println("------------------------------------");
+        } else {
+            // Se não encontrar, informa o usuário
+            System.out.println("Erro: Conta não encontrada.");
+        }
+    }
+
+    private static void creditarValor() {
+        System.out.print("\nDigite o número da conta para creditar: ");
+        String numero = scanner.nextLine();
+
+        // 1. Primeiro, verifica se a conta existe
+        ContaAbstrata conta = banco.obterConta(numero);
+
+        if (conta != null) {
+            // 2. Se a conta foi encontrada, SÓ ENTÃO pede o valor
+            System.out.print("Conta encontrada. Digite o valor a ser creditado: ");
+            double valor = scanner.nextDouble();
+            scanner.nextLine(); // Limpar buffer
+
+            // 3. Realiza a operação
+            conta.creditar(valor); // Este método já imprime o sucesso ou falha do crédito
+
+        } else {
+            // Se a conta não foi encontrada, informa o erro e volta ao menu
+            System.out.println("Erro: Conta não encontrada.");
+        }
+    }
+
+    private static void debitarValor() {
+        System.out.print("\nDigite o número da conta para debitar: ");
+        String numero = scanner.nextLine();
+
+        // 1. Primeiro, verifica se a conta existe
+        ContaAbstrata conta = banco.obterConta(numero);
+
+        if (conta != null) {
+            // 2. Se a conta foi encontrada, SÓ ENTÃO pede o valor
+            System.out.print("Conta encontrada. Digite o valor a ser debitado: ");
+            double valor = scanner.nextDouble();
+            scanner.nextLine(); // Limpar buffer
+
+            // 3. Tenta realizar a operação e usa a resposta (true/false)
+            if (conta.debitar(valor)) {
+                System.out.println("Débito de R$" + String.format("%.2f", valor) + " realizado com sucesso.");
+            } else {
+                System.out.println("Operação falhou. Saldo/Limite insuficiente ou valor inválido.");
+            }
+
+        } else {
+            // Se a conta não foi encontrada, informa o erro e volta ao menu
+            System.out.println("Erro: Conta não encontrada.");
+        }
+    }
+
+    private static void removerConta() {
+        System.out.print("\nDigite o número da conta a ser removida: ");
+        String numero = scanner.nextLine();
+        banco.removerConta(numero);
+    }
+
+    private static void renderJuros() {
+        System.out.print("\nDigite o número da conta poupança para render juros: ");
+        String numero = scanner.nextLine();
+
+        // 1. Primeiro, verifica se a conta existe
+        ContaAbstrata conta = banco.obterConta(numero);
+
+        if (conta != null) {
+            // 2. Se existe, verifica se é do tipo correto
+            if (conta instanceof ContaPoupanca) {
+                // 3. Se for, realiza a operação (não precisa de mais inputs)
+                ((ContaPoupanca) conta).renderJuros();
+            } else {
+                System.out.println("Erro: Esta operação é válida apenas para Contas Poupança.");
+            }
+        } else {
+            // Se a conta não foi encontrada, informa o erro e volta ao menu
+            System.out.println("Erro: Conta não encontrada.");
+        }
     }
 }
