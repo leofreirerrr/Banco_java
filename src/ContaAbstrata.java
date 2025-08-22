@@ -1,5 +1,9 @@
-public abstract class ContaAbstrata {
+/**
+ * A classe Abstrata serve como uma base para as outras classes que herdarem dela.
+ * Os métodos declarados aqui devem ser sobrescritos pelas subclasses, e obrigatóriamente devem estar presentes
+ */
 
+public abstract class ContaAbstrata {
     private final String numero;
             protected double saldo;
 
@@ -13,7 +17,7 @@ public abstract class ContaAbstrata {
         this.saldo = 0.0; // Saldo inicial é sempre zero
     }
 
-    // Métodos abstratos que serão implementados e subclasses, elas terão q sobrescrever para cada tipo de conta
+    // Métodos abstratos que serão implementados e subclasses, elas terão que sobrescrever para cada tipo de conta
     public abstract void creditar(double valor);
     public abstract boolean debitar(double valor);
 
@@ -27,7 +31,7 @@ public abstract class ContaAbstrata {
     }
 
     @Override
-    public String toString() { //isso aqui serve pra implementar um objeto diretamente, vai ser usado no exibircontas()
+    public String toString() { //isso aqui serve para implementar um objeto diretamente, vai ser usado no exibircontas()
         return "Conta [Numero=" + numero + ", Saldo=" + String.format("%.2f", saldo) + "]";
     }
 }

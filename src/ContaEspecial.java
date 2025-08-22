@@ -1,15 +1,12 @@
 public class ContaEspecial extends ContaCorrente {
 
     // O limite de crédito é uma constante da classe
+    //esse final significa que o valor não pode ser alterado
             private static final double LIMITE_CREDITO = 1000.00;
 
     public ContaEspecial(String numero) {
         // Chama o construtor da superclasse (ContaCorrente)
         super(numero);
-    }
-
-    public double getLimiteCredito() {
-        return LIMITE_CREDITO;
     }
 
     /**
