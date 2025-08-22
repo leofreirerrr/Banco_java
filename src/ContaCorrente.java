@@ -9,7 +9,7 @@ public class ContaCorrente extends ContaAbstrata {
     public void creditar(double valor) {
         if (valor > 0) {
             this.saldo += valor;
-            System.out.println("Crédito de R$" + String.format("%.2f", valor) + " realizado com sucesso.");
+            System.out.printf("Crédito de R$ %.2f realizado com sucesso.\n", valor);
         } else {
             System.out.println("Valor de crédito inválido.");
         }
@@ -26,6 +26,6 @@ public class ContaCorrente extends ContaAbstrata {
 
     @Override
     public String toString() {
-        return "Conta Corrente [Número: " + getNumero() + ", Saldo: R$" + String.format("%.2f", getSaldo()) + "]";
+        return String.format("Conta Corrente [Número: %s , Saldo: R$ %.2f]", getNumero(), getSaldo());
     }
 }

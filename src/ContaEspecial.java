@@ -9,6 +9,10 @@ public class ContaEspecial extends ContaCorrente {
         super(numero);
     }
 
+    public static double getLimiteCredito() {
+        return LIMITE_CREDITO;
+    }
+
     /**
      * Sobrescreve o método debitar para considerar o limite de crédito.
      * O cliente pode sacar até o saldo + limite.
@@ -24,6 +28,6 @@ public class ContaEspecial extends ContaCorrente {
 
     @Override
     public String toString() {
-        return "Conta Especial [Número: " + getNumero() + ", Saldo: R$" + String.format("%.2f", getSaldo()) + ", Limite: R$" + String.format("%.2f", LIMITE_CREDITO) + "]";
+        return String.format("Conta Especial [Número: %s , Saldo: R$% .2f , Limite: R$%.2f ]", getNumero(), getSaldo(), getLimiteCredito());
     }
 }

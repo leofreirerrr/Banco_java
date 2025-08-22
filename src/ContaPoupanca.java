@@ -22,6 +22,6 @@ public class ContaPoupanca extends ContaCorrente {
 
     @Override
     public String toString() {
-        return "Conta Poupança [Número: " + getNumero() + ", Saldo: R$" + String.format("%.2f", getSaldo()) + "]";
+        return String.format("Conta Poupança: [Número: %s , Saldo: R$ %.2f]", getNumero(), getSaldo());
     }
 }
